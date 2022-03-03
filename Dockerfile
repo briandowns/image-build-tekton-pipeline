@@ -21,13 +21,13 @@ RUN for bin in $(ls cmd/); do                                                   
     go build                                                                       \
         -gcflags=-trimpath=${GOPATH}/src                                           \
         -ldflags "-linkmode=external -extldflags \"-static -Wl,--fatal-warnings\"" \
-        -o bin/${bin} ./cmd/controller && ls -ltra bin/;                           \
+        -o bin/${bin} ./cmd/${bin};                                                \
     done
 RUN for bin in $(ls bin/); do           \
-        go-assert-static.sh bin/${bin}; \
+        go-assert-static.sh bin/${bin} && exit 0; \
     done
 RUN for bin in $(ls bin/); do           \
-        go-assert-boring.sh bin/${bin}; \
+        go-assert-boring.sh bin/${bin} && exit 0; \
     done
 	    
 RUN for bin in $(ls cmd/); do                 \
